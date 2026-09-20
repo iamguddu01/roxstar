@@ -84,6 +84,10 @@ async function testFlow() {
   console.log('Chat Messages count:', chatDb.rows.length, 'Message:', chatDb.rows[0]?.message);
   console.log('Spin History count:', spinDb.rows.length, 'Reward:', spinDb.rows[0]?.reward);
 
+  await pool.query('DELETE FROM rooms WHERE id = $1', [roomData.room.id]);
+  await pool.query('DELETE FROM users WHERE id = $1', [roomData.user.id]);
+  console.log('Cleaned test room and user');
+
   socket.disconnect();
   await pool.end();
   console.log('\n✅ All automated end-to-end checks PASSED!');
