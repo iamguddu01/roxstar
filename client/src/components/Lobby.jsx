@@ -8,6 +8,7 @@ export default function Lobby({
   onJoinRoom,
   loading,
   error,
+  serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:5001',
 }) {
   const [roomName, setRoomName] = useState('');
   const [joinCode, setJoinCode] = useState('');
@@ -18,7 +19,7 @@ export default function Lobby({
   const fetchPublicRooms = async () => {
     setFetchingRooms(true);
     try {
-      const res = await fetch('http://localhost:5000/api/rooms');
+      const res = await fetch(`${serverUrl}/api/rooms`);
       const data = await res.json();
       if (data.success && Array.isArray(data.rooms)) {
         setActiveRooms(data.rooms);

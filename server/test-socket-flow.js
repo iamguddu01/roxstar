@@ -1,11 +1,15 @@
+require('dotenv').config();
 const { io } = require('socket.io-client');
 const { pool } = require('./db');
 
+const PORT = process.env.PORT || 5001;
+const SERVER_URL = `http://localhost:${PORT}`;
+
 async function testFlow() {
-  console.log('Testing full socket & DB flow...');
+  console.log('Testing full socket & DB flow on ' + SERVER_URL + '...');
 
   // 1. Create Room via REST API
-  const createRes = await fetch('http://localhost:5000/api/rooms', {
+  const createRes = await fetch(`${SERVER_URL}/api/rooms`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -16,7 +20,7 @@ async function testFlow() {
   const roomData = await createRes.json();
   console.log('✓ Room created:', roomData.room.room_code);
 
-  const socket = io('http://localhost:5000', {
+  const socket = io(SERVER_URL, {
     transports: ['websocket'],
   });
 

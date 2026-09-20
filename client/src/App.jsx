@@ -4,7 +4,7 @@ import Lobby from './components/Lobby';
 import GameRoom from './components/GameRoom';
 import { soundManager } from './utils/audio';
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5000';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5001';
 
 export default function App() {
   const [username, setUsername] = useState(() => {
@@ -269,6 +269,7 @@ export default function App() {
           onJoinRoom={handleJoinRoom}
           loading={loading}
           error={error}
+          serverUrl={SERVER_URL}
         />
       ) : (
         <GameRoom
