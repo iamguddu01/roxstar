@@ -4,7 +4,11 @@ import Lobby from './components/Lobby';
 import GameRoom from './components/GameRoom';
 import { soundManager } from './utils/audio';
 
-const SERVER_URL = import.meta.env.VITE_SERVER_URL || 'http://localhost:5001';
+const SERVER_URL =
+  import.meta.env.VITE_SERVER_URL ||
+  (import.meta.env.PROD
+    ? 'https://roxstar-production.up.railway.app'
+    : 'http://localhost:5001');
 
 export default function App() {
   const [username, setUsername] = useState(() => {

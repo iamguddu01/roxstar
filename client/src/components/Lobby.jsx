@@ -8,7 +8,11 @@ export default function Lobby({
   onJoinRoom,
   loading,
   error,
-  serverUrl = import.meta.env.VITE_SERVER_URL || 'http://localhost:5001',
+  serverUrl =
+    import.meta.env.VITE_SERVER_URL ||
+    (import.meta.env.PROD
+      ? 'https://roxstar-production.up.railway.app'
+      : 'http://localhost:5001'),
 }) {
   const [roomName, setRoomName] = useState('');
   const [joinCode, setJoinCode] = useState('');
