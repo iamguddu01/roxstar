@@ -29,6 +29,11 @@ app.use(express.json());
 app.use('/api/rooms', roomRoutes);
 app.use('/api/users', userRoutes);
 
+// Root route
+app.get('/', (req, res) => {
+  res.status(200).json({ status: 'OK', message: 'Spin Wheel Server is running!' });
+});
+
 // Lightweight Health Check Endpoint (Render / Load Balancer friendly, no DB call)
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'OK' });
@@ -69,9 +74,9 @@ const io = new Server(server, {
 
 initSockets(io);
 
-// Start Server
-server.listen(PORT, () => {
-  console.log(`🚀 Spin Wheel Server running on http://localhost:${PORT}`);
+// Start Server (bind to 0.0.0.0 for cloud containers)
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`🚀 Spin Wheel Server running on port ${PORT}`);
 });
 
 // Graceful Shutdown
