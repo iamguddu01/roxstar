@@ -1,6 +1,8 @@
 const express = require('express');
 const http = require('http');
 const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 const { Server } = require('socket.io');
 require('dotenv').config();
 
@@ -74,9 +76,21 @@ const io = new Server(server, {
 
 initSockets(io);
 
+// Auto-run schema migrations on startup
+async function runAutoMigration() {
+  try {
+    const schemaSql = fs.readFileSync(path.join(__dirname, 'db', 'schema.sql'), 'utf-8');
+    await pool.query(schemaSql);
+    console.log('✅ Database schema verified / migrated successfully!');
+  } catch (err) {
+    console.error('⚠️ Auto-migration error:', err);
+  }
+}
+
 // Start Server (bind to 0.0.0.0 for cloud containers)
-server.listen(PORT, '0.0.0.0', () => {
+server.listen(PORT, '0.0.0.0', async () => {
   console.log(`🚀 Spin Wheel Server running on port ${PORT}`);
+  await runAutoMigration();
 });
 
 // Graceful Shutdown

@@ -32,7 +32,7 @@ const roomController = {
       });
     } catch (err) {
       console.error('Error creating room:', err);
-      return res.status(500).json({ error: 'Failed to create room.' });
+      return res.status(500).json({ error: err.message || 'Failed to create room.' });
     }
   },
 
